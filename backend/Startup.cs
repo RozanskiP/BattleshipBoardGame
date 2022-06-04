@@ -1,3 +1,4 @@
+using backend.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,18 +31,21 @@ namespace backend
 
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy(
-                    builder =>
-                    {
-                        builder.WithOrigins("https://localhost:3000")
-                                            .AllowAnyHeader()
-                                            .AllowAnyMethod();
-                    });
+                options.AddPolicy("ClientPermission", policy =>
+                {
+                    policy.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .WithOrigins("http://localhost:3000", "https://localhost:3000/")
+                        .AllowCredentials();
+                });
             });
 
-            services.AddSwaggerGen(c =>
+            services.AddSignalR();
+
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiDocumentation", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiDocumentation", Version = "v1" });
+                options.AddSignalRSwaggerGen();
             });
         }
 
@@ -59,7 +63,7 @@ namespace backend
 
             app.UseRouting();
 
-            app.UseCors();
+            app.UseCors("ClientPermission");
 
             app.UseAuthorization();
 
@@ -68,6 +72,7 @@ namespace backend
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapHub<GameHubController>("/hubs/game");
             });
         }
     }

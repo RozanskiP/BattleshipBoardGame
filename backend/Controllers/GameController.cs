@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
+﻿using backend.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace backend.Controllers
 {
@@ -9,14 +8,20 @@ namespace backend.Controllers
     [Route("api/[controller]/[action]")]
     public class GameController : ControllerBase
     {
-        public GameController()
+        private readonly MainService mainService;
+        private readonly IHubContext<GameHubController> hubContext;
+
+        public GameController(IHubContext<GameHubController> hubContext)
         {
+            this.mainService = new MainService(hubContext);
+            this.hubContext = hubContext;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok();
+            var gameData = mainService.RunApplication();
+            return Ok(gameData);
         }
     }
 }
