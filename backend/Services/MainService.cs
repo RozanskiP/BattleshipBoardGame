@@ -1,4 +1,5 @@
 ﻿using backend.Controllers;
+using backend.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,9 @@ namespace backend.Services
             this.hubContext = hubContext;
         }
 
-        public async Task<Game> RunApplication()
+        public async Task<Game> RunApplication(ICreateSimulation createSimulation)
         {
-            var game = new Game(1, 10);
+            var game = new Game(1, createSimulation);
             game.StartGame(hubContext);
 
             return game;

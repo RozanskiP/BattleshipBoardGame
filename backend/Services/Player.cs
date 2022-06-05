@@ -19,7 +19,7 @@ namespace backend.Services
 
         Random random = new Random();
 
-        public Player(int id, string name, int boardSize)
+        public Player(int id, string name)
         {
             this.Id = id;
             this.Name = name;
@@ -29,14 +29,16 @@ namespace backend.Services
 
         public void MakeMove(Coordinates coordinates)
         {
-            var enemyBoard = EnemyBoard.Where(field => field.Coordinates.X == coordinates.X && field.Coordinates.Y == coordinates.Y).FirstOrDefault();
+            var enemyBoard = EnemyBoard.Where(field => field.Coordinates.X == coordinates.X &&
+                                              field.Coordinates.Y == coordinates.Y).FirstOrDefault();
 
             enemyBoard.IsCheckend = true;
         }
 
         public bool CheckMove(Coordinates coordinates)
         {
-            var enemyBoard = EnemyBoard.Where(field => field.Coordinates.X == coordinates.X && field.Coordinates.Y == coordinates.Y).FirstOrDefault();
+            var enemyBoard = EnemyBoard.Where(field => field.Coordinates.X == coordinates.X && 
+                                              field.Coordinates.Y == coordinates.Y).FirstOrDefault();
             if (enemyBoard.IsCheckend)
             {
                 return false;

@@ -1,4 +1,5 @@
 ﻿using backend.Controllers;
+using backend.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -22,13 +23,16 @@ namespace backend.Services
 
         public bool GameEnded { get; set; }
 
-        public Game(int id, int boardSize)
+        public AlgorithmType AlgorithmType { get; set; }
+
+        public Game(int id, ICreateSimulation createSimulation)
         {
             this.Id = id;
-            this.Player1 = new Player(1, "Computer1", boardSize);
-            this.Player2 = new Player(2, "Computer2", boardSize);
+            this.Player1 = new Player(1, "Computer1");
+            this.Player2 = new Player(2, "Computer2");
             this.Round = 0;
-            this.BoardSize = 10;
+            this.BoardSize = createSimulation.BoardSize;
+            this.AlgorithmType = (AlgorithmType)createSimulation.Algorithm;
         }
 
         Random random = new Random();
@@ -51,13 +55,27 @@ namespace backend.Services
             await hubContext.Clients.All.SendAsync("ReceiveMessage", this);
         }
 
-        public async Task<bool> OneRound(IHubContext<GameHubController> hubContext)
+        private async Task<bool> OneRound(IHubContext<GameHubController> hubContext)
         {
             Coordinates coordinates = null;
 
             do
             {
-                coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
+                switch (this.AlgorithmType)
+                {
+                    case AlgorithmType.NaiveImplementation:
+                        coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
+                        break;
+                    case AlgorithmType.RandomWithLastShip:
+                        coordinates = RandomWithLastShip();
+                        break;
+                    case AlgorithmType.ProbabilityDensity:
+                        coordinates = ProbabilityDensity();
+                        break;
+                    default:
+                        coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
+                        break;
+                }
             } while (!Player1.CheckMove(coordinates));
             
 
@@ -74,7 +92,21 @@ namespace backend.Services
 
             do
             {
-                coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
+                switch (this.AlgorithmType)
+                {
+                    case AlgorithmType.NaiveImplementation:
+                        coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
+                        break;
+                    case AlgorithmType.RandomWithLastShip:
+                        coordinates = RandomWithLastShip();
+                        break;
+                    case AlgorithmType.ProbabilityDensity:
+                        coordinates = ProbabilityDensity();
+                        break;
+                    default:
+                        coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
+                        break;
+                }
             } while (!Player2.CheckMove(coordinates));
 
             Player2.MakeMove(coordinates);
@@ -90,7 +122,7 @@ namespace backend.Services
             return false;
         }
 
-        public void SetMoveAsCorrectType(Player player, Coordinates coordinates)
+        private void SetMoveAsCorrectType(Player player, Coordinates coordinates)
         {
             var field = player.Board.Where(field => field.Coordinates.X == coordinates.X && field.Coordinates.Y == coordinates.Y).FirstOrDefault();
 
@@ -106,7 +138,7 @@ namespace backend.Services
             }
         }
 
-        public bool IsWin(Player player)
+        private bool IsWin(Player player)
         {
             var isAnyFieldNotHitted = player.Board.Where(field => !field.IsHit &&
                                                     field.FiledType != FieldType.Empty).ToList();
@@ -119,6 +151,22 @@ namespace backend.Services
             {
                 return true;
             }
+        }
+
+        private Coordinates RandomWithLastShip()
+        {
+            //TODO: Mock
+            Coordinates coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
+
+            return coordinates;
+        }
+
+        private Coordinates ProbabilityDensity()
+        {
+            //TODO: Mock
+            Coordinates coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
+
+            return coordinates;
         }
     }
 }

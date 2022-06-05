@@ -1,11 +1,12 @@
-﻿using backend.Services;
+﻿using backend.Interfaces;
+using backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace backend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     public class GameController : ControllerBase
     {
         private readonly MainService mainService;
@@ -17,10 +18,10 @@ namespace backend.Controllers
             this.hubContext = hubContext;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpPost]
+        public IActionResult Post([FromBody]ICreateSimulation createSimulation)
         {
-            var gameData = mainService.RunApplication();
+            var gameData = mainService.RunApplication(createSimulation);
             return Ok(gameData);
         }
     }
