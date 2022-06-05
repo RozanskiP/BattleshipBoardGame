@@ -1,39 +1,18 @@
-import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { RootState } from "../store/store";
 
 const CreateGame = () => {
-  const [connection, setConnection] = useState<HubConnection>();
-
-  useEffect(() => {
-    const newConnection = new HubConnectionBuilder()
-      .withUrl("https://localhost:44328/hubs/game")
-      .withAutomaticReconnect()
-      .build();
-
-    setConnection(newConnection);
-  }, []);
-
-  useEffect(() => {
-    if (connection) {
-      connection
-        .start()
-        .then((result) => {
-          console.log("Connected!");
-
-          connection.on("ReceiveMessage", (message) => {
-            console.log("Message: ");
-            console.log(message);
-          });
-        })
-        .catch((e) => console.log("Connection failed: ", e));
-    }
-  }, [connection]);
+  const { webSocket } = useSelector((state: RootState) => state.WebSocket);
+  const { id } = useSelector((state: RootState) => state.Game);
+  const navigate = useNavigate();
 
   const sendMessage = async () => {
-    if (connection?.connectionId) {
+    if (webSocket?.connectionId) {
       try {
-        await connection.send("SendMessage", "Pawel");
+        await webSocket.send("SendMessage", "Pawel");
       } catch (e) {
         console.log(e);
       }
@@ -41,6 +20,12 @@ const CreateGame = () => {
       alert("No connection to server yet.");
     }
   };
+
+  useEffect(() => {
+    if (id > 0) {
+      navigate(`/game/${id}`);
+    }
+  }, [id, navigate]);
 
   const RunGame = () => {
     axios.get("https://localhost:44328/api/Game/Get").then(() => {

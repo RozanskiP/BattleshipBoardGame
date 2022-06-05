@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import gameSlice from "./gameSlice";
+import WebSocketSlice from "./WebSocketSlice";
 
 export const store = configureStore({
   reducer: {
     Game: gameSlice,
+    WebSocket: WebSocketSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

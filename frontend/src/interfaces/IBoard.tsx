@@ -4,4 +4,5 @@ export default interface IBoard {
   coordinates: ICoordinates;
   filedType: number;
   isCheckend: boolean;
+  IsHit: boolean;
 }

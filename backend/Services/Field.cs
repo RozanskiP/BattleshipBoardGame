@@ -13,9 +13,11 @@ namespace backend.Services
 
         public bool IsCheckend { get; set; }
 
-        public bool isShipHit()
+        public bool IsHit { get; set; }
+
+        public static bool isShipHit(FieldType fieldType)
         {
-            switch (FiledType)
+            switch (fieldType)
             {
                 case FieldType.Carrier:
                 case FieldType.BattleShip:

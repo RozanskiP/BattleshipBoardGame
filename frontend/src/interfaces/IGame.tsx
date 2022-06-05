@@ -5,4 +5,6 @@ export default interface IGame {
   player1: IPlayer;
   player2: IPlayer;
   round: number;
+  boardSize: number;
+  gameEnded: boolean;
 }

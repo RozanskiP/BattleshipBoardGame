@@ -19,9 +19,7 @@ namespace backend.Services
         public async Task<Game> RunApplication()
         {
             var game = new Game(1, 10);
-            game.StartGame();
-
-            await hubContext.Clients.All.SendAsync("ReceiveMessage", game);
+            game.StartGame(hubContext);
 
             return game;
         }

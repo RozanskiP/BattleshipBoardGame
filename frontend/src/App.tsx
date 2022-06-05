@@ -5,6 +5,7 @@ import HeaderBar from "./components/HeaderBar";
 import CreateGame from "./pages/CreateGame";
 import Dashboard from "./pages/Dashboard";
 import GameSimulation from "./pages/GameSimulation";
+import WebSocketConnection from "./store/WebSocketConnection";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       <div>
         <HeaderBar />
         <div className="main-content">
+          <WebSocketConnection />
           <Suspense fallback={<div>Loading...</div>}></Suspense>
           <Routes>
             <Route path="/" element={<Dashboard />} />
