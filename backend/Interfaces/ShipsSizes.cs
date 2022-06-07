@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace backend.Services
+namespace backend.Interfaces
 {
     public class ShipsSizes
     {

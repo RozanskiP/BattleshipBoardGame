@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import HeaderBar from "./components/HeaderBar";
 import CreateGame from "./pages/CreateGame";
 import Dashboard from "./pages/Dashboard";
 import GameSimulation from "./pages/GameSimulation";
@@ -11,7 +10,6 @@ const App = () => {
   return (
     <>
       <div>
-        <HeaderBar />
         <div className="main-content">
           <WebSocketConnection />
           <Suspense fallback={<div>Loading...</div>}></Suspense>

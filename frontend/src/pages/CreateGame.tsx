@@ -11,6 +11,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../environments";
 import ICreateSimulation from "../interfaces/ICreateSimulation";
 import { RootState } from "../store/store";
 
@@ -43,7 +44,7 @@ const CreateGame = () => {
       boardSize: boardSize,
     };
 
-    axios.post("https://localhost:44328/api/Game", game).then(() => {
+    axios.post(API_URL + "api/Game", game).then(() => {
       console.log("Game started");
     });
   };
@@ -77,7 +78,7 @@ const CreateGame = () => {
                 defaultValue={1}
               >
                 <MenuItem value={1}>Naive Implementation</MenuItem>
-                <MenuItem value={2}>Random With Last Ship</MenuItem>
+                <MenuItem value={2}>Random With Last Ship 'In Progres'</MenuItem>
                 <MenuItem value={3}>Probability Density 'In Progres'</MenuItem>
               </Select>
             </FormControl>

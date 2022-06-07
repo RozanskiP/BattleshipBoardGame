@@ -1,6 +1,6 @@
 FROM node:13.12.0-alpine
-WORKDIR /ui
-ENV PATH /ui/node_modules/.bin:$PATH
+WORKDIR /frontend
+ENV PATH /frontend/node_modules/.bin:$PATH
 COPY package.json ./
 COPY package-lock.json ./
 RUN npm install --silent

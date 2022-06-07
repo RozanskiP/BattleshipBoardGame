@@ -35,7 +35,8 @@ namespace backend
                 {
                     policy.AllowAnyHeader()
                         .AllowAnyMethod()
-                        .WithOrigins("http://localhost:3000", "https://localhost:3000/")
+                        .WithOrigins("http://localhost:3000", "https://localhost:3000/", "https://localhost:5001/", "http://localhost:5001",
+                                      "https://localhost:5000/", "http://localhost:5000/")
                         .AllowCredentials();
                 });
             });

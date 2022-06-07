@@ -1,11 +1,12 @@
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { API_URL } from "../environments";
 import IWebSocket from "../interfaces/IWebSocket";
 import { RootState } from "./store";
 
 const initialState: IWebSocket = {
   webSocket: new HubConnectionBuilder()
-    .withUrl("https://localhost:44328/hubs/game")
+    .withUrl(API_URL + "hubs/game")
     .withAutomaticReconnect()
     .build(),
 };
