@@ -7,7 +7,6 @@ import {
   Select,
   TextField,
 } from "@material-ui/core";
-import { SelectChangeEvent } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -31,18 +30,6 @@ const CreateGame = () => {
   const handleChangeBoardSize = (event: any) => {
     setBoardSize(parseInt(event.target.value));
   };
-
-  // const sendMessage = async () => {
-  //   if (webSocket?.connectionId) {
-  //     try {
-  //       await webSocket.send("SendMessage", "Pawel");
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   } else {
-  //     alert("No connection to server yet.");
-  //   }
-  // };
 
   useEffect(() => {
     if (id > 0) {

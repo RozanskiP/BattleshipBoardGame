@@ -67,7 +67,7 @@ namespace backend.Services
                         coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
                         break;
                     case AlgorithmType.RandomWithLastShip:
-                        coordinates = RandomWithLastShip();
+                        coordinates = RandomWithLastShip(Player1);
                         break;
                     case AlgorithmType.ProbabilityDensity:
                         coordinates = ProbabilityDensity();
@@ -98,7 +98,7 @@ namespace backend.Services
                         coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
                         break;
                     case AlgorithmType.RandomWithLastShip:
-                        coordinates = RandomWithLastShip();
+                        coordinates = RandomWithLastShip(Player2);
                         break;
                     case AlgorithmType.ProbabilityDensity:
                         coordinates = ProbabilityDensity();
@@ -126,9 +126,10 @@ namespace backend.Services
         {
             var field = player.Board.Where(field => field.Coordinates.X == coordinates.X && field.Coordinates.Y == coordinates.Y).FirstOrDefault();
 
-
             if (Field.isShipHit(field.FiledType))
             {
+                player.LastFindShip = coordinates;
+                player.NumberOfCheckedShips = 0;
                 field.IsHit = true;
                 field.IsCheckend = true;
             }
@@ -153,10 +154,24 @@ namespace backend.Services
             }
         }
 
-        private Coordinates RandomWithLastShip()
+        private Coordinates RandomWithLastShip(Player player)
         {
             //TODO: Mock
             Coordinates coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
+
+            if (player.LastFindShip != null)
+            {
+                var FindCrossNodes = player.Board.Where(field => field.Coordinates.X - 1 > player.LastFindShip.X &&
+                                                        field.Coordinates.X + 1 < player.LastFindShip.X &&
+                                                        field.Coordinates.Y - 1 > player.LastFindShip.Y &&
+                                                        field.Coordinates.Y + 1 < player.LastFindShip.Y).ToList();
+
+                // check 
+                if (FindCrossNodes.Count() > 0)
+                {
+
+                }
+            }
 
             return coordinates;
         }

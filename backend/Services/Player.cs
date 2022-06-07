@@ -17,6 +17,10 @@ namespace backend.Services
 
         public bool Win { get; set; }
 
+        public Coordinates LastFindShip { get; set; }
+
+        public int NumberOfCheckedShips { get; set; }
+
         Random random = new Random();
 
         public Player(int id, string name)

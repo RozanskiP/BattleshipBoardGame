@@ -4,7 +4,6 @@
 
 .App-game {
   height: 30vmin;
-  font-size: 200px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -37,4 +36,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.container {
+  font-size: 10px;
 }

@@ -85,118 +85,124 @@ const Board = () => {
 
   return (
     <div>
-      <div className="container">
-        <h3>{player1.name}</h3>
-        <div className="row">
-          <div className="col">
-            <h4>Ocean grid</h4>
-            <table className="table table-bordered">
-              <tbody>
-                {to2DTable(player1.board, boardSize).map((items) => {
-                  return (
-                    <tr>
-                      {items.map((field: IBoard) => {
+      <div className="App">
+        <div className="App-game">
+          <div className="App-header">
+            <div className="container">
+              <h3>{player1.name}</h3>
+              <div className="row">
+                <div className="col">
+                  <h4>Ocean grid</h4>
+                  <table className="table table-bordered">
+                    <tbody>
+                      {to2DTable(player1.board, boardSize).map((items) => {
                         return (
-                          <th
-                            style={toSpecificType(
-                              field.filedType,
-                              field.isCheckend,
-                              field.IsHit
-                            )}
-                          >
-                            {setValue(field)}
-                          </th>
+                          <tr>
+                            {items.map((field: IBoard) => {
+                              return (
+                                <th
+                                  style={toSpecificType(
+                                    field.filedType,
+                                    field.isCheckend,
+                                    field.IsHit
+                                  )}
+                                >
+                                  {setValue(field)}
+                                </th>
+                              );
+                            })}
+                          </tr>
                         );
                       })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          <div className="col">
-            <h4>Target grid</h4>
-            <table className="table table-bordered">
-              <tbody>
-                {to2DTable(player1.enemyBoard, boardSize).map((items) => {
-                  return (
-                    <tr>
-                      {items.map((field: IBoard) => {
+                    </tbody>
+                  </table>
+                </div>
+                <div className="col">
+                  <h4>Target grid</h4>
+                  <table className="table table-bordered">
+                    <tbody>
+                      {to2DTable(player1.enemyBoard, boardSize).map((items) => {
                         return (
-                          <th
-                            style={toSpecificType(
-                              field.filedType,
-                              field.isCheckend,
-                              field.IsHit
-                            )}
-                          >
-                            {setValue(field)}
-                          </th>
+                          <tr>
+                            {items.map((field: IBoard) => {
+                              return (
+                                <th
+                                  style={toSpecificType(
+                                    field.filedType,
+                                    field.isCheckend,
+                                    field.IsHit
+                                  )}
+                                >
+                                  {setValue(field)}
+                                </th>
+                              );
+                            })}
+                          </tr>
                         );
                       })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
 
-      <div className="container">
-        <h3>{player2.name}</h3>
-        <div className="row">
-          <div className="col">
-            <h4>Ocean grid</h4>
-            <table className="table table-bordered">
-              <tbody>
-                {to2DTable(player2.board, boardSize).map((items) => {
-                  return (
-                    <tr>
-                      {items.map((field: IBoard) => {
+            <div className="container">
+              <h3>{player2.name}</h3>
+              <div className="row">
+                <div className="col">
+                  <h4>Ocean grid</h4>
+                  <table className="table table-bordered">
+                    <tbody>
+                      {to2DTable(player2.board, boardSize).map((items) => {
                         return (
-                          <th
-                            style={toSpecificType(
-                              field.filedType,
-                              field.isCheckend,
-                              field.IsHit
-                            )}
-                          >
-                            {setValue(field)}
-                          </th>
+                          <tr>
+                            {items.map((field: IBoard) => {
+                              return (
+                                <th
+                                  style={toSpecificType(
+                                    field.filedType,
+                                    field.isCheckend,
+                                    field.IsHit
+                                  )}
+                                >
+                                  {setValue(field)}
+                                </th>
+                              );
+                            })}
+                          </tr>
                         );
                       })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          <div className="col">
-            <h4>Target gid</h4>
-            <table className="table table-bordered">
-              <tbody>
-                {to2DTable(player2.enemyBoard, boardSize).map((items) => {
-                  return (
-                    <tr>
-                      {items.map((field: IBoard) => {
+                    </tbody>
+                  </table>
+                </div>
+                <div className="col">
+                  <h4>Target gid</h4>
+                  <table className="table table-bordered">
+                    <tbody>
+                      {to2DTable(player2.enemyBoard, boardSize).map((items) => {
                         return (
-                          <th
-                            style={toSpecificType(
-                              field.filedType,
-                              field.isCheckend,
-                              field.IsHit
-                            )}
-                          >
-                            {setValue(field)}
-                          </th>
+                          <tr>
+                            {items.map((field: IBoard) => {
+                              return (
+                                <th
+                                  style={toSpecificType(
+                                    field.filedType,
+                                    field.isCheckend,
+                                    field.IsHit
+                                  )}
+                                >
+                                  {setValue(field)}
+                                </th>
+                              );
+                            })}
+                          </tr>
                         );
                       })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
