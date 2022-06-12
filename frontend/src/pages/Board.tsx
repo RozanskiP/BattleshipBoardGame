@@ -110,10 +110,19 @@ const Board = () => {
                     <tbody>
                       {to2DTable(player1.board, boardSize).map((items) => {
                         return (
-                          <tr>
+                          <tr
+                            key={
+                              "TrKey-" + player1.id + items[0]?.coordinates.x
+                            }
+                          >
                             {items.map((field: IBoard) => {
                               return (
                                 <th
+                                  key={
+                                    "Key-" +
+                                    field.coordinates.x +
+                                    field.coordinates.y
+                                  }
                                   style={toSpecificType(
                                     field.filedType,
                                     field.isCheckend,
@@ -136,10 +145,19 @@ const Board = () => {
                     <tbody>
                       {to2DTable(player1.enemyBoard, boardSize).map((items) => {
                         return (
-                          <tr>
+                          <tr
+                            key={
+                              "TrKey-" + player1.id + items[0]?.coordinates.x
+                            }
+                          >
                             {items.map((field: IBoard) => {
                               return (
                                 <th
+                                  key={
+                                    "Key-" +
+                                    field.coordinates.x +
+                                    field.coordinates.y
+                                  }
                                   style={toSpecificType(
                                     field.filedType,
                                     field.isCheckend,
@@ -168,10 +186,19 @@ const Board = () => {
                     <tbody>
                       {to2DTable(player2.board, boardSize).map((items) => {
                         return (
-                          <tr>
+                          <tr
+                            key={
+                              "TrKey-" + player2.id + items[0]?.coordinates.x
+                            }
+                          >
                             {items.map((field: IBoard) => {
                               return (
                                 <th
+                                  key={
+                                    "Key-" +
+                                    field.coordinates.x +
+                                    field.coordinates.y
+                                  }
                                   style={toSpecificType(
                                     field.filedType,
                                     field.isCheckend,
@@ -194,10 +221,19 @@ const Board = () => {
                     <tbody>
                       {to2DTable(player2.enemyBoard, boardSize).map((items) => {
                         return (
-                          <tr>
+                          <tr
+                            key={
+                              "TrKey-" + player2.id + items[0]?.coordinates.x
+                            }
+                          >
                             {items.map((field: IBoard) => {
                               return (
                                 <th
+                                  key={
+                                    "Key-" +
+                                    field.coordinates.x +
+                                    field.coordinates.y
+                                  }
                                   style={toSpecificType(
                                     field.filedType,
                                     field.isCheckend,

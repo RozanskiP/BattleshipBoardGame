@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import { Box, Button } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
@@ -9,14 +9,26 @@ const Dashboard = () => {
       <div className="App">
         <div className="App-game">
           <div className="App-header">
-            <Button
-              variant="contained"
-              size="large"
-              onClick={() => navigate("/game")}
-              color="primary"
-            >
-              <div>Create Simulation</div>
-            </Button>
+            <Box m={5}>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={() => navigate("/game")}
+                color="primary"
+              >
+                <div>Create Simulation</div>
+              </Button>
+            </Box>
+            <Box m={5}>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={() => navigate("/stats")}
+                color="primary"
+              >
+                <div>Show Stats</div>
+              </Button>
+            </Box>
           </div>
         </div>
       </div>

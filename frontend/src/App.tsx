@@ -7,6 +7,7 @@ import GameSimulation from "./pages/GameSimulation";
 import WebSocketConnection from "./store/WebSocketConnection";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Stats from "./pages/Stats";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
             <Route path="/" element={<Dashboard />} />
             <Route path="/game" element={<CreateGame />} />
             <Route path="/game/:gameId" element={<GameSimulation />} />
+            <Route path="/stats" element={<Stats />} />
           </Routes>
           <ToastContainer closeButton={false} position="top-right" />
         </div>

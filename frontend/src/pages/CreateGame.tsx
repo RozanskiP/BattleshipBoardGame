@@ -110,7 +110,8 @@ const CreateGame = () => {
               >
                 Run simulation
               </Button>
-              <Box m={5}></Box>
+            </Box>
+            <Box m={5}>
               <Button
                 variant="contained"
                 size="large"
