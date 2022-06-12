@@ -1,6 +1,21 @@
 version: "3.3"
 
 services:
+  db:
+    image: postgres:latest
+    container_name: postgresdbBattleShip
+    restart: always
+    environment:
+      HOST: "localhost"
+      POSTGRES_USER: "UserPawel"
+      POSTGRES_PASSWORD: "Password1234"
+      POSTGRES_DB: "postgresdbBattleShip"
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - global
   backend:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -18,7 +33,9 @@ services:
     networks:
       - global
     volumes:
-      - ~/.aspnet/https:/https:ro
+      - ./certificates/https:/https:ro
+    depends_on:
+      - db
   front:
     build:
       context: ./frontend
@@ -36,6 +53,9 @@ services:
       - "/app/node_modules"
     networks:
       - global
+volumes:
+  db:
+    driver: local
 
 networks:
   global:
