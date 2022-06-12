@@ -14,11 +14,14 @@ import { useNavigate } from "react-router-dom";
 import { API_URL } from "../environments";
 import ICreateSimulation from "../interfaces/ICreateSimulation";
 import { RootState } from "../store/store";
+import { setInitial } from "../store/gameSlice";
+import { useAppDispatch } from "../store/hooks";
+import { toast } from "react-toastify";
 
 const CreateGame = () => {
-  // const { webSocket } = useSelector((state: RootState) => state.WebSocket);
   const { id } = useSelector((state: RootState) => state.Game);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const [algorithm, setAlgorithm] = useState<string>("");
 
@@ -29,7 +32,7 @@ const CreateGame = () => {
   const [boardSize, setBoardSize] = useState<number>(10);
 
   const handleChangeBoardSize = (event: any) => {
-    setBoardSize(parseInt(event.target.value));
+    setBoardSize(parseInt(event.target.value || 0));
   };
 
   useEffect(() => {
@@ -44,9 +47,23 @@ const CreateGame = () => {
       boardSize: boardSize,
     };
 
-    axios.post(API_URL + "api/Game", game).then(() => {
-      console.log("Game started");
-    });
+    axios
+      .post(API_URL + "api/Game", game)
+      .then(() => {
+        toast.success("Game ended");
+      })
+      .catch((err: any) => {
+        showError(err);
+      });
+  };
+
+  const handleBackToMenu = () => {
+    dispatch(setInitial());
+    navigate("/");
+  };
+
+  const showError = (err: any) => {
+    toast.error("You need to choose board size and algorithm type: " + err);
   };
 
   return (
@@ -78,8 +95,10 @@ const CreateGame = () => {
                 defaultValue={1}
               >
                 <MenuItem value={1}>Naive Implementation</MenuItem>
-                <MenuItem value={2}>Random With Last Ship 'In Progres'</MenuItem>
-                <MenuItem value={3}>Probability Density 'In Progres'</MenuItem>
+                <MenuItem value={2}>Random With Last Ship</MenuItem>
+                <MenuItem value={3}>
+                  Random With Last Ship with Better Random Choosing
+                </MenuItem>
               </Select>
             </FormControl>
             <Box m={5}>
@@ -90,6 +109,15 @@ const CreateGame = () => {
                 onClick={RunGame}
               >
                 Run simulation
+              </Button>
+              <Box m={5}></Box>
+              <Button
+                variant="contained"
+                size="large"
+                color="secondary"
+                onClick={handleBackToMenu}
+              >
+                Back To Menu
               </Button>
             </Box>
           </div>

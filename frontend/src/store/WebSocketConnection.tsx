@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { updateRoomGame } from "./gameSlice";
 import { useAppDispatch } from "./hooks";
 import { RootState } from "./store";
@@ -13,14 +14,15 @@ const WebSocketConnection = () => {
       webSocket
         .start()
         .then((result) => {
-          console.log("Connected!");
+          toast.success("Websocket Connected!");
 
           webSocket.on("ReceiveMessage", (message) => {
-            console.log(message);
             dispatch(updateRoomGame(message));
           });
         })
-        .catch((e) => console.log("Connection failed: ", e));
+        .catch((e) => {
+          toast.error("Websocket connection failed ", e);
+        });
     }
   }, [webSocket]);
 

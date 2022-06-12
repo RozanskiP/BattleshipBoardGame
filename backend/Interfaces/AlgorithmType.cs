@@ -9,6 +9,6 @@ namespace backend.Interfaces
     {
         NaiveImplementation = 1,
         RandomWithLastShip,
-        ProbabilityDensity
+        RandomWithLastShipAndBetterChoossingNodes
     }
 }

@@ -23,6 +23,8 @@ namespace backend.Services
 
         public bool GameEnded { get; set; }
 
+        public bool ForceStop { get; set; }
+
         public AlgorithmType AlgorithmType { get; set; }
 
         public Game(int id, ICreateSimulation createSimulation)
@@ -31,6 +33,7 @@ namespace backend.Services
             this.Player1 = new Player(1, "Computer1");
             this.Player2 = new Player(2, "Computer2");
             this.Round = 0;
+            this.ForceStop = false;
             this.BoardSize = createSimulation.BoardSize;
             this.AlgorithmType = (AlgorithmType)createSimulation.Algorithm;
         }
@@ -49,9 +52,20 @@ namespace backend.Services
                 Round++;
                 isEnded = await OneRound(hubContext);
                 
+                if (this.ForceStop)
+                {
+                    StopGame(hubContext);
+                    break;
+                }
                 Thread.Sleep(100);
             } while (!isEnded);
             GameEnded = true;
+
+            await hubContext.Clients.All.SendAsync("ReceiveMessage", this);
+        }
+
+        public async void StopGame(IHubContext<GameHubController> hubContext)
+        {
             await hubContext.Clients.All.SendAsync("ReceiveMessage", this);
         }
 
@@ -67,10 +81,10 @@ namespace backend.Services
                         coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
                         break;
                     case AlgorithmType.RandomWithLastShip:
-                        coordinates = RandomWithLastShip(Player1);
+                        coordinates = RandomWithLastShip(Player2, Player1);
                         break;
-                    case AlgorithmType.ProbabilityDensity:
-                        coordinates = ProbabilityDensity();
+                    case AlgorithmType.RandomWithLastShipAndBetterChoossingNodes:
+                        coordinates = RandomWithLastShipAndBetterChoossingNodes(Player2, Player1);
                         break;
                     default:
                         coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
@@ -98,10 +112,10 @@ namespace backend.Services
                         coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
                         break;
                     case AlgorithmType.RandomWithLastShip:
-                        coordinates = RandomWithLastShip(Player2);
+                        coordinates = RandomWithLastShip(Player1, Player2);
                         break;
-                    case AlgorithmType.ProbabilityDensity:
-                        coordinates = ProbabilityDensity();
+                    case AlgorithmType.RandomWithLastShipAndBetterChoossingNodes:
+                        coordinates = RandomWithLastShipAndBetterChoossingNodes(Player1, Player2);
                         break;
                     default:
                         coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
@@ -154,33 +168,54 @@ namespace backend.Services
             }
         }
 
-        private Coordinates RandomWithLastShip(Player player)
+        private Coordinates RandomWithLastShip(Player player, Player player2)
         {
-            //TODO: Mock
-            Coordinates coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
+            var coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
 
-            if (player.LastFindShip != null)
-            {
-                var FindCrossNodes = player.Board.Where(field => field.Coordinates.X - 1 > player.LastFindShip.X &&
-                                                        field.Coordinates.X + 1 < player.LastFindShip.X &&
-                                                        field.Coordinates.Y - 1 > player.LastFindShip.Y &&
-                                                        field.Coordinates.Y + 1 < player.LastFindShip.Y).ToList();
-
-                // check 
-                if (FindCrossNodes.Count() > 0)
-                {
-
-                }
-            }
+            coordinates = LastShip(player, player2, coordinates, this.BoardSize);
 
             return coordinates;
         }
 
-        private Coordinates ProbabilityDensity()
+        private Coordinates RandomWithLastShipAndBetterChoossingNodes(Player player, Player player2)
         {
-            //TODO: Mock
-            Coordinates coordinates = new Coordinates(random.Next(this.BoardSize), random.Next(this.BoardSize));
+            var x = random.Next(this.BoardSize);
+            var y = random.Next(this.BoardSize);
 
+            var halfRound = ((this.BoardSize * this.BoardSize) - 1) / 2;
+
+            while (!((x % 2 == 0 && y % 2 == 0) || (x % 2 == 1 && y % 2 == 1)) && halfRound > this.Round)
+            {
+                x = random.Next(this.BoardSize);
+                x = random.Next(this.BoardSize);
+            } 
+
+            var coordinates = new Coordinates(x, y);
+
+            coordinates = LastShip(player, player2, coordinates, this.BoardSize);
+
+            return coordinates;
+        }
+
+        private static Coordinates LastShip(Player player, Player player2, Coordinates coordinates, int bordSize)
+        {
+            if (player.LastFindShip != null && player.LastFindShip.Y >= 0 && player.LastFindShip.Y < bordSize
+                && player.LastFindShip.X >= 0 && player.LastFindShip.X < bordSize)
+            {
+                // get cross nodes
+                var findCrossNodes = player2.EnemyBoard.Where(field => ((field.Coordinates.X == player.LastFindShip.X - 1 && field.Coordinates.Y == player.LastFindShip.Y) ||
+                                                                 (field.Coordinates.X == player.LastFindShip.X + 1 && field.Coordinates.Y == player.LastFindShip.Y) ||
+                                                                 (field.Coordinates.X == player.LastFindShip.X && field.Coordinates.Y == player.LastFindShip.Y - 1) ||
+                                                                 (field.Coordinates.X == player.LastFindShip.X && field.Coordinates.Y == player.LastFindShip.Y + 1)) &&
+                                                                 !field.IsCheckend).ToList();
+
+                // check finded crossed node
+                if (findCrossNodes.Count() > 0)
+                {
+                    player.NumberOfCheckedShips = findCrossNodes.Count();
+                    coordinates = findCrossNodes.FirstOrDefault().Coordinates;
+                }
+            }
             return coordinates;
         }
     }

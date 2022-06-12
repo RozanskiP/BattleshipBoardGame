@@ -19,7 +19,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]ICreateSimulation createSimulation)
+        public IActionResult StartGame([FromBody]ICreateSimulation createSimulation)
         {
             var gameData = mainService.RunApplication(createSimulation);
             return Ok(gameData);
