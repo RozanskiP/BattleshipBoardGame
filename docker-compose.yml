@@ -1,22 +1,7 @@
 version: "3.3"
 
 services:
-  db:
-    image: postgres:latest
-    container_name: postgresdbBattleShip
-    restart: always
-    environment:
-      HOST: "localhost"
-      POSTGRES_USER: "UserPawel"
-      POSTGRES_PASSWORD: "Password1234"
-      POSTGRES_DB: "postgresdbBattleShip"
-    ports:
-      - "5432:5432"
-    volumes:
-      - db:/var/lib/postgresql/data
-    networks:
-      - global
-  backend:
+  battleship-backend:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+;http://+
@@ -29,18 +14,16 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: backend
+    container_name: battleship-backend
     networks:
       - global
     volumes:
       - ./certificates/https:/https:ro
-    depends_on:
-      - db
-  front:
+  battleship-frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: front
+    container_name: battleship-frontend
     ports:
       - "5002:3000"
     environment:
@@ -53,9 +36,6 @@ services:
       - "/app/node_modules"
     networks:
       - global
-volumes:
-  db:
-    driver: local
 
 networks:
   global:
