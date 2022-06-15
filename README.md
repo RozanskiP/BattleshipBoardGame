@@ -2,6 +2,8 @@
 
 The aim of the project is to design and implement a simulation of a strategic board game Batteship for two people.
 
+[ONLINE SIMULATION](https://battleshippawelapp2.herokuapp.com/)
+
 ## Rules:
 
 These are the rules of battleship that I was guided by when creating the game

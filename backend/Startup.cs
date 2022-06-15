@@ -37,7 +37,10 @@ namespace backend
                         .AllowAnyMethod()
                         .WithOrigins("http://localhost:3000", "https://localhost:3000/", "https://localhost:5001/", "http://localhost:5001",
                                       "https://localhost:5000/", "http://localhost:5000/", "https://localhost:5002/", "http://localhost:5002/",
-                                      "http://localhost:5002", "https://localhost:5002")
+                                      "http://localhost:5002", "https://localhost:5002", "https://battleshippawelapp2.herokuapp.com/", "https://battleshippawelapp2.herokuapp.com",
+                                      "http://battleshippawelapp2.herokuapp.com", "http://battleshippawelapp2.herokuapp.com/",
+                                      "https://battleshippawel.herokuapp.com/", "https://battleshippawel.herokuapp.com",
+                                      "https://battleshippawel.herokuapp.com/hubs/game/negotiate?negotiateVersion=1" )
                         .AllowCredentials();
                 });
             });
